@@ -1,10 +1,10 @@
 package edu.skku.cs.todocalendar.Model;
 
-import edu.skku.cs.todocalendar.Presenter.MainContract;
+import edu.skku.cs.todocalendar.Presenter.Contract;
 
-public class MainModel {
-    MainContract.Presenter presenter;
-    public MainModel(MainContract.Presenter presenter){
+public class Model {
+    Contract.Presenter presenter;
+    public Model(Contract.Presenter presenter){
         this.presenter = presenter;
     }
     public Boolean checkIDPW(String id, String pw){
