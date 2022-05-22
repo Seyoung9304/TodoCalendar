@@ -10,13 +10,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TodoCalendar">
         <activity
-            android:name=".RegisterActivity"
+            android:name=".View.RegisterActivity"
             android:exported="false" />
         <activity
-            android:name=".CalendarActivity"
+            android:name=".View.CalendarActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".View.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
