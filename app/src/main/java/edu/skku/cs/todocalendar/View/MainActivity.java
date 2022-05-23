@@ -45,12 +45,14 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                 }.start();
             }
         });
+
     }
 
     @Override
     public void showLoginResult(Boolean success) {
         if (success==true) {
             Intent intent = new Intent(this, CalendarActivity.class);
+            intent.putExtra("uid", e_id.getText().toString());
             startActivity(intent);
             finish();
         }else{
