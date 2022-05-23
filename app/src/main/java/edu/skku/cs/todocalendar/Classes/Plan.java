@@ -5,9 +5,6 @@ public class Plan {
     int year;
     int month;
     int day;
-    int hour;
-    int minute;
-    Boolean need_alarm;
     String color;
 
     public String getTitle() {
@@ -40,30 +37,6 @@ public class Plan {
 
     public void setDay(int day) {
         this.day = day;
-    }
-
-    public int getHour() {
-        return hour;
-    }
-
-    public void setHour(int hour) {
-        this.hour = hour;
-    }
-
-    public int getMinute() {
-        return minute;
-    }
-
-    public void setMinute(int minute) {
-        this.minute = minute;
-    }
-
-    public Boolean getNeed_alarm() {
-        return need_alarm;
-    }
-
-    public void setNeed_alarm(Boolean need_alarm) {
-        this.need_alarm = need_alarm;
     }
 
     public String getColor() {
