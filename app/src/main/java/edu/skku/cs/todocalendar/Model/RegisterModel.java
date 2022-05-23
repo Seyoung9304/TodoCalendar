@@ -20,6 +20,7 @@ import okhttp3.Response;
 
 public class RegisterModel {
     RegisterContract.Presenter presenter;
+    Boolean checkedID = false;
 
     public RegisterModel(RegisterContract.Presenter presenter) {
         this.presenter = presenter;
@@ -44,12 +45,16 @@ public class RegisterModel {
         }
 
         if (success){
+            checkedID = true;
             return true;
         }else{
             return false;
         }
     }
     public Boolean registerUser(String id, String pw, String pw_verify){
+        if (checkedID == false){
+            return false;
+        }
         Boolean success = false;
         if (pw.compareTo(pw_verify)==0){
             try {

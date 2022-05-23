@@ -98,7 +98,7 @@ public class RegisterActivity extends AppCompatActivity implements RegisterContr
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    Toast.makeText(getApplicationContext(), "ERROR - Try again.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "ERROR - Did you checked ID? Did you checked password?", Toast.LENGTH_LONG).show();
                 }
             }, 0);
         }
