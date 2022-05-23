@@ -1,6 +1,6 @@
 package edu.skku.cs.todocalendar.Presenter;
 
-public interface Contract {
+public interface MainContract {
     interface View{
         void showLoginResult(Boolean success);
         //void showRegisterResult(Boolean success);
