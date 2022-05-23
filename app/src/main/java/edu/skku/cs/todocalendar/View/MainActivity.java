@@ -45,7 +45,13 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                 }.start();
             }
         });
-
+        b_register.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, RegisterActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
