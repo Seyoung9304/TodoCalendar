@@ -5,7 +5,7 @@ public class Plan {
     int year;
     int month;
     int day;
-    String color;
+    String memo;
 
     public String getTitle() {
         return title;
@@ -39,11 +39,11 @@ public class Plan {
         this.day = day;
     }
 
-    public String getColor() {
-        return color;
+    public String getMemo() {
+        return memo;
     }
 
-    public void setColor(String color) {
-        this.color = color;
+    public void setMemo(String memo) {
+        this.memo = memo;
     }
 }
