@@ -12,8 +12,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TodoCalendar">
         <activity
-            android:name=".NewPlanActivity"
-            android:exported="false" />
+            android:name=".View.TodoActivity"
+            android:exported="false"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            />
         <activity
             android:name=".View.RegisterActivity"
             android:exported="false" />

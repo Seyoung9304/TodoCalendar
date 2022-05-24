@@ -46,13 +46,6 @@ public class ListViewAdapter extends BaseAdapter {
             view = inflater.inflate(R.layout.listviewlayout, viewGroup, false);
         }
         Button todo = view.findViewById(R.id.todo_object);
-        String color =  plans.get(i).getColor();
-        // TODO
-        switch (color) {
-            case "purple":
-                // todo.setBackgroundColor();
-                break;
-        }
 
         return view;
     }
