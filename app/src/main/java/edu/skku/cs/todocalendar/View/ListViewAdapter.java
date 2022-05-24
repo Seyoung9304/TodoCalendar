@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -45,7 +46,10 @@ public class ListViewAdapter extends BaseAdapter {
             LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(R.layout.listviewlayout, viewGroup, false);
         }
-        Button todo = view.findViewById(R.id.todo_object);
+
+        CheckBox obj = view.findViewById(R.id.todo_object);
+        obj.setText(plans.get(i).getTitle());
+        obj.setChecked(plans.get(i).getDone());
 
         return view;
     }

@@ -1,5 +1,7 @@
 package edu.skku.cs.todocalendar.Model;
 
+import android.util.Log;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -33,9 +35,11 @@ public class MainModel {
             jsonObject = new JSONObject(Response);
             success = jsonObject.getBoolean("success");
         } catch (JSONException | IOException e) {
+            Log.e("checkidpw", "error");
             e.printStackTrace();
         }
-
+        Log.e("uid", id);
+        Log.e("success?", success.toString());
         if (success){
             return true;
         }else{
