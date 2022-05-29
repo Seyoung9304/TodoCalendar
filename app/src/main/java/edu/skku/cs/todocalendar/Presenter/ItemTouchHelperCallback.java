@@ -1,5 +1,6 @@
 package edu.skku.cs.todocalendar.Presenter;
 
+import android.annotation.SuppressLint;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -12,14 +13,14 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
-enum ButtonsState{
-    GONE,
-    LEFT_VISIBLE,
-    RIGHT_VISIBLE
-}
-
 public class ItemTouchHelperCallback extends ItemTouchHelper.Callback {
-    private ItemTouchHelperListener listener;
+    enum ButtonsState{
+        GONE,
+        LEFT_VISIBLE,
+        RIGHT_VISIBLE
+    }
+
+    private final ItemTouchHelperListener listener;
     private boolean swipeBack = false;
     private ButtonsState buttonsShowedState = ButtonsState.GONE;
     private static final float buttonWidth = 115;
@@ -37,16 +38,19 @@ public class ItemTouchHelperCallback extends ItemTouchHelper.Callback {
 
     @Override
     public int getMovementFlags(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
-        return 0;
+        int drag_flags = ItemTouchHelper.UP|ItemTouchHelper.DOWN;
+        int swipe_flags = ItemTouchHelper.START|ItemTouchHelper.END;
+        return makeMovementFlags(drag_flags,swipe_flags);
     }
 
     @Override
     public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-        return false;
+        return listener.onItemMove(viewHolder.getAdapterPosition(),target.getAdapterPosition());
     }
 
     @Override
     public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+        listener.onItemSwipe(viewHolder.getAdapterPosition());
         Log.e("ItemTouchHelperCallback", "onswiped");
     }
 
@@ -95,7 +99,7 @@ public class ItemTouchHelperCallback extends ItemTouchHelper.Callback {
                     itemView.getBottom() - 10);
             p.setColor(Color.BLUE);
             c.drawRoundRect(leftButton, corners, corners, p);
-            drawText("수정", c, leftButton, p);
+            drawText("완료", c, leftButton, p);
             buttonInstance = leftButton;
 
             //왼쪽으로 스와이프 했을때 (오른쪽에 버튼이 보여지게 될 경우)
@@ -131,6 +135,7 @@ public class ItemTouchHelperCallback extends ItemTouchHelper.Callback {
     }
 
 
+    @SuppressLint("ClickableViewAccessibility")
     private void setTouchListener(final Canvas c, final RecyclerView recyclerView,
                                   final RecyclerView.ViewHolder viewHolder,
                                   final float dX, final float dY, final int actionState,
@@ -144,7 +149,6 @@ public class ItemTouchHelperCallback extends ItemTouchHelper.Callback {
                     if(dX < -buttonWidth) buttonsShowedState = ButtonsState.RIGHT_VISIBLE;
                     else if(dX > buttonWidth) buttonsShowedState = ButtonsState.LEFT_VISIBLE;
 
-
                     if(buttonsShowedState != ButtonsState.GONE){
                         setTouchDownListener(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
                         setItemsClickable(recyclerView, false);
@@ -155,6 +159,7 @@ public class ItemTouchHelperCallback extends ItemTouchHelper.Callback {
         });
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private void setTouchDownListener(final Canvas c, final RecyclerView recyclerView
             , final RecyclerView.ViewHolder viewHolder, final float dX, final float dY
             , final int actionState, final boolean isCurrentlyActive){
@@ -164,11 +169,15 @@ public class ItemTouchHelperCallback extends ItemTouchHelper.Callback {
                 if(event.getAction() == MotionEvent.ACTION_DOWN){
                     setTouchUpListener(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
                 }
+                if( event.getAction() == MotionEvent.ACTION_UP){
+                    v.performClick();
+                }
                 return false;
             }
         });
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private void setTouchUpListener(final Canvas c, final RecyclerView recyclerView
             , final RecyclerView.ViewHolder viewHolder, final float dX, final float dY
             , final int actionState, final boolean isCurrentlyActive){
