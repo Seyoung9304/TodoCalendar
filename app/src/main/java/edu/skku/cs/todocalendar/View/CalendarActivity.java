@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.time.LocalDate;
 import java.time.YearMonth;
@@ -32,6 +33,7 @@ public class CalendarActivity extends AppCompatActivity implements CalendarContr
     private TextView monthYearText;
     private RecyclerView calendarRecyclerView;
     private LocalDate selectedDate;
+    private int selectedDay = 0;
 
     AppCompatButton addplan;
 
@@ -39,8 +41,8 @@ public class CalendarActivity extends AppCompatActivity implements CalendarContr
     ListViewAdapter listViewAdapter;
     ItemTouchHelper helper;
 
-    ArrayList<Plan> plans;
-    ArrayList<Plan> todayplans;
+    ArrayList<Plan> ACTIVITY_plans;
+    ArrayList<Plan> ACTIVITY_todayplans;
 
     private String uid;
 
@@ -76,16 +78,22 @@ public class CalendarActivity extends AppCompatActivity implements CalendarContr
         helper = new ItemTouchHelper(new ItemTouchHelperCallback((listViewAdapter)));
         helper.attachToRecyclerView(listview);
 
-
-
         addplan = findViewById(R.id.b_add_todo);
 
         addplan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), TodoActivity.class);
-                //intent.putExtra("*/-+")
-                startActivity(intent);
+                if (selectedDay!=0){
+                    Intent intent = new Intent(getApplicationContext(), TodoActivity.class);
+                    intent.putExtra("menu", "add");
+                    intent.putExtra("uid", uid);
+                    intent.putExtra("y", selectedDate.getYear());
+                    intent.putExtra("m", selectedDate.getMonthValue());
+                    intent.putExtra("d", selectedDay);
+                    startActivity(intent);
+                }else{
+                    Toast.makeText(getApplicationContext(), "Select the date first.", Toast.LENGTH_LONG).show();
+                }
             }
         });
     }
@@ -142,11 +150,13 @@ public class CalendarActivity extends AppCompatActivity implements CalendarContr
     }
 
     public void previousMonthAction(View view){
+        selectedDay = 0;
         selectedDate = selectedDate.minusMonths(1);
         setMonthView();
     }
 
     public void nextMonthAction(View view){
+        selectedDay = 0;
         selectedDate = selectedDate.plusMonths(1);
         setMonthView();
     }
@@ -154,6 +164,7 @@ public class CalendarActivity extends AppCompatActivity implements CalendarContr
     @Override
     public void onItemClick(int position, String dayText) {
         if(!dayText.equals("")) {
+            selectedDay = Integer.parseInt(dayText);
             presenter.onDateClick(selectedDate.getYear(), selectedDate.getMonthValue(), Integer.parseInt(dayText)); //month: 0~11
         }
     }
@@ -163,9 +174,10 @@ public class CalendarActivity extends AppCompatActivity implements CalendarContr
     public void showTodayTodoList(ArrayList<Plan> today_plans) {
         // listViewAdapter = new ListViewAdapter(getApplicationContext(), today_plans);
         // listview.setAdapter(listViewAdapter);
+        ACTIVITY_todayplans = today_plans;
         Log.e("calendaractivity", String.valueOf(today_plans.size()));
         Log.e("calendaractivity", "showtodaytodolist");
-        listViewAdapter.setItems(today_plans);
+        listViewAdapter.setItems(ACTIVITY_todayplans);
     }
 
     @Override

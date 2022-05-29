@@ -4,6 +4,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -46,12 +47,13 @@ public class ItemTouchHelperCallback extends ItemTouchHelper.Callback {
 
     @Override
     public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-
+        Log.e("ItemTouchHelperCallback", "onswiped");
     }
 
     //아이템을 터치하거나 스와이프하거나 뷰에 변화가 생길경우 불러오는 함수
     @Override
     public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+        Log.e("ItemTouchHelperCallback", "onchilddraw");
         //아이템이 스와이프 됐을경우 버튼을 그려주기 위해서 스와이프가 됐는지 확인
         if(actionState == ItemTouchHelper.ACTION_STATE_SWIPE){
             if(buttonsShowedState != ButtonsState.GONE){
@@ -133,6 +135,7 @@ public class ItemTouchHelperCallback extends ItemTouchHelper.Callback {
                                   final RecyclerView.ViewHolder viewHolder,
                                   final float dX, final float dY, final int actionState,
                                   final boolean isCurrentlyActive){
+        Log.e("ItemTouchHelperCallback", "settouchlistner");
         recyclerView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {

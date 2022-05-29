@@ -88,21 +88,6 @@ public class ListViewAdapter extends RecyclerView.Adapter<ListViewAdapter.ItemVi
 
     }
 
-    /*
-    @Override
-    public View getView(int i, View view, ViewGroup viewGroup) {
-        if (view==null){
-            LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = inflater.inflate(R.layout.listviewlayout, viewGroup, false);
-        }
-
-        TextView obj = view.findViewById(R.id.title);
-        obj.setText(plans.get(i).getTitle());
-
-        return view;
-    }
-    */
-
     class ItemViewHolder extends RecyclerView.ViewHolder {
 
         TextView title;

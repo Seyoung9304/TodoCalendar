@@ -90,4 +90,9 @@ public class CalendarModel {
         }
         return todayplan;
     }
+
+    public void newPlanAdded(Plan plan){
+        plans.add(plan);
+
+    }
 }

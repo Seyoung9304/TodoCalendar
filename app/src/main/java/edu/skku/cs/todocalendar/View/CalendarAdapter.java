@@ -1,5 +1,6 @@
 package edu.skku.cs.todocalendar.View;
 
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder> {
 
     private final ArrayList<String> daysOfMonth;
     private final OnItemListener onItemListener;
+    private int selected_position = -1;
 
     public CalendarAdapter(ArrayList<String> daysOfMonth, OnItemListener onItemListener)
     {
@@ -42,7 +44,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder> {
         return daysOfMonth.size();
     }
 
-    public interface  OnItemListener {
+    public interface OnItemListener {
         void onItemClick(int position, String dayText);
     }
 }

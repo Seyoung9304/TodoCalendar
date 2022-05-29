@@ -2,12 +2,21 @@ package edu.skku.cs.todocalendar.Classes;
 
 public class Plan {
     int id;
+    String uid;
     String title;
     int year;
     int month;
     int day;
     String memo;
     Boolean done;
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
 
     public int getId() {
         return id;
