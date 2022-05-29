@@ -124,10 +124,8 @@ public class TodoModel {
     }
     public void updatePlanStatus(int id, Boolean done){
         Boolean success = false;
-        String done_req = "false";
-        if (done==true){
-            done_req = "true";
-        }
+        String done_req = done.toString();
+        Log.e("updatestatus to", done_req);
         try {
             OkHttpClient client = new OkHttpClient();
             HttpUrl.Builder urlBuilder = HttpUrl.parse("https://ofihg9ck5b.execute-api.ap-northeast-2.amazonaws.com/dev/updateplanstatus").newBuilder();

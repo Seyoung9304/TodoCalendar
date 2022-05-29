@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import edu.skku.cs.todocalendar.Presenter.CalendarContract;
+import edu.skku.cs.todocalendar.Presenter.CalendarPresenter;
 import edu.skku.cs.todocalendar.Presenter.TodoPresenter;
 import edu.skku.cs.todocalendar.R;
 
@@ -33,6 +34,7 @@ public class TodoActivity extends Activity implements CalendarContract.TodoView 
     String memo;
 
     CalendarContract.TodoPresenter presenter;
+    CalendarContract.CalendarPresenter calendarPresenter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -45,6 +47,7 @@ public class TodoActivity extends Activity implements CalendarContract.TodoView 
         b_cancel = findViewById(R.id.b_cancel);
 
         presenter = new TodoPresenter(this);
+        calendarPresenter = new CalendarPresenter(this);
 
         intent = getIntent();
         menu = intent.getStringExtra("menu");
@@ -101,8 +104,10 @@ public class TodoActivity extends Activity implements CalendarContract.TodoView 
     }
 
     @Override
-    public void showAddResult(Boolean success) {
+    public void showAddResult(Boolean success, int year, int month, int day) {
         if(success==true){
+            Intent intent_back = new Intent();
+            setResult(0, intent_back);
             finish();
         }else{
             Toast.makeText(getApplicationContext(), "Error: Try Again.", Toast.LENGTH_LONG).show();
@@ -110,8 +115,10 @@ public class TodoActivity extends Activity implements CalendarContract.TodoView 
     }
 
     @Override
-    public void showChangeResult(Boolean success) {
+    public void showChangeResult(Boolean success, int year, int month, int day) {
         if(success==true){
+            Intent intent_back = new Intent();
+            setResult(0, intent_back);
             finish();
         }else{
             Toast.makeText(getApplicationContext(), "Error: Try Again.", Toast.LENGTH_LONG).show();

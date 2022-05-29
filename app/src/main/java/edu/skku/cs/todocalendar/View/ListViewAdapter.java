@@ -48,6 +48,7 @@ public class ListViewAdapter extends RecyclerView.Adapter<ListViewAdapter.ItemVi
 
     @Override
     public void onBindViewHolder(@NonNull ListViewAdapter.ItemViewHolder holder, int position) {
+        holder.setIsRecyclable(false);
         holder.onBind(items.get(position));
     }
 
@@ -73,7 +74,8 @@ public class ListViewAdapter extends RecyclerView.Adapter<ListViewAdapter.ItemVi
         items.add(to_position, plan);
 
         //Adapter에 데이터 이동알림
-        notifyItemMoved(from_position,to_position);
+        // notifyItemMoved(from_position,to_position);
+        notifyDataSetChanged();
         return true;
     }
 
@@ -82,16 +84,21 @@ public class ListViewAdapter extends RecyclerView.Adapter<ListViewAdapter.ItemVi
         return;
     }
 
+    //public class DoneClickThread extends Thread{}
+
     // Change Item 'done' status
     @Override
     public void onLeftClick(int position, RecyclerView.ViewHolder viewHolder) {
         Plan obj = items.get(position);
-        new Thread(){
+        int obj_id = obj.getId();
+        Boolean obj_done = obj.getDone();
+        new Thread() {
             public void run(){
-                todoPresenter.onDoneClick(obj.getId(), !obj.getDone());
+                Log.e("object current done", obj_done.toString());
+                todoPresenter.onDoneClick(obj_id, !obj_done);
             }
         }.start();
-        items.get(position).changeStatus();
+        obj.changeStatus();
         notifyDataSetChanged();
         Toast.makeText(mContext, "Update Status Success!", Toast.LENGTH_SHORT).show();
     }

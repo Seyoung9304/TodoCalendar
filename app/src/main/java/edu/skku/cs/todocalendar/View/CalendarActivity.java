@@ -1,6 +1,7 @@
 package edu.skku.cs.todocalendar.View;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -11,6 +12,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.graphics.Canvas;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -25,11 +28,13 @@ import edu.skku.cs.todocalendar.Classes.Plan;
 import edu.skku.cs.todocalendar.Presenter.CalendarContract;
 import edu.skku.cs.todocalendar.Presenter.CalendarPresenter;
 import edu.skku.cs.todocalendar.Presenter.ItemTouchHelperCallback;
+import edu.skku.cs.todocalendar.Presenter.TodoPresenter;
 import edu.skku.cs.todocalendar.R;
 
 
 public class CalendarActivity extends AppCompatActivity implements CalendarContract.CalendarView, CalendarAdapter.OnItemListener {
 
+    int SUCCESS_CODE = 0;
     private TextView monthYearText;
     private RecyclerView calendarRecyclerView;
     private LocalDate selectedDate;
@@ -48,12 +53,14 @@ public class CalendarActivity extends AppCompatActivity implements CalendarContr
     private String uid;
 
     CalendarContract.CalendarPresenter presenter;
+    CalendarContract.TodoPresenter todoPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar);
         presenter = new CalendarPresenter(this);
+        todoPresenter = new TodoPresenter(this);
 
         initWidgets();
         selectedDate = LocalDate.now();
@@ -94,7 +101,7 @@ public class CalendarActivity extends AppCompatActivity implements CalendarContr
                     intent.putExtra("y", selectedDate.getYear());
                     intent.putExtra("m", selectedDate.getMonthValue());
                     intent.putExtra("d", selectedDay);
-                    startActivity(intent);
+                    startActivityForResult(intent, SUCCESS_CODE);
                 }else{
                     Toast.makeText(getApplicationContext(), "Select the date first.", Toast.LENGTH_LONG).show();
                 }
@@ -169,7 +176,13 @@ public class CalendarActivity extends AppCompatActivity implements CalendarContr
     public void onItemClick(int position, String dayText) {
         if(!dayText.equals("")) {
             selectedDay = Integer.parseInt(dayText);
-            presenter.onDateClick(selectedDate.getYear(), selectedDate.getMonthValue(), Integer.parseInt(dayText)); //month: 0~11
+
+            new Thread(){
+                public void run(){
+                    presenter.onDateClick(selectedDate.getYear(), selectedDate.getMonthValue(), Integer.parseInt(dayText)); //month: 0~11
+                }
+            }.start();
+
             String showtext = selectedDate.getYear() + ". " + selectedDate.getMonthValue() + ". " + dayText;
             dateTodo.setText(showtext);
         }
@@ -178,12 +191,16 @@ public class CalendarActivity extends AppCompatActivity implements CalendarContr
 
     @Override
     public void showTodayTodoList(ArrayList<Plan> today_plans) {
-        // listViewAdapter = new ListViewAdapter(getApplicationContext(), today_plans);
-        // listview.setAdapter(listViewAdapter);
         ACTIVITY_todayplans = today_plans;
         Log.e("calendaractivity", String.valueOf(today_plans.size()));
         Log.e("calendaractivity", "showtodaytodolist");
-        listViewAdapter.setItems(ACTIVITY_todayplans);
+        Handler handler = new Handler(Looper.getMainLooper());
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                listViewAdapter.setItems(ACTIVITY_todayplans);
+            }
+        }, 0);
     }
 
     @Override
@@ -191,15 +208,19 @@ public class CalendarActivity extends AppCompatActivity implements CalendarContr
         ACTIVITY_plans = plans;
     }
 
-    public void addTodo(Plan plan){
-        ACTIVITY_plans.add(plan);
-        ACTIVITY_todayplans.add(plan);
-        listViewAdapter.setItems(ACTIVITY_todayplans);
-    }
-
-    public void deleteTodo(Plan plan){
-        ACTIVITY_todayplans.remove(plan);
-        ACTIVITY_plans.remove(plan);
-        listViewAdapter.setItems(ACTIVITY_todayplans);
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.e("backed on CalenderActivity", "onactivityresult");
+        Log.e("resultcode", String.valueOf(resultCode));
+        if(resultCode == SUCCESS_CODE){
+            Log.e("onactivityresult", "before");
+            new Thread(){
+                public void run(){
+                    presenter.onDateClick(selectedDate.getYear(), selectedDate.getMonthValue(), selectedDay); //month: 0~11
+                }
+            }.start();
+            Log.e("onactivityresult", "after");
+        }
     }
 }

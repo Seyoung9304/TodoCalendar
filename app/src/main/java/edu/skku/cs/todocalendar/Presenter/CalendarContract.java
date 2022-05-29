@@ -14,11 +14,11 @@ public interface CalendarContract {
     interface CalendarPresenter{
         void onActivityStart(String uid); // get user id and get plan info of corresponding id
         void onDateClick(int year, int month, int day);
-        // void onTodoChange(); // when delete/change/add in todolist occur -> reload todolist
+        void onDataChange(int year, int month, int day); // when delete/change/add in todolist occur -> reload todolist
     }
     interface TodoView{
-        void showAddResult(Boolean success);
-        void showChangeResult(Boolean success);
+        void showAddResult(Boolean success, int year, int month, int day);
+        void showChangeResult(Boolean success, int year, int month, int day);
     }
     interface TodoPresenter{
         void onAddClick(String uid, String title, String memo, int year, int month, int day);
