@@ -74,9 +74,9 @@ public class RegisterActivity extends AppCompatActivity implements RegisterContr
             @Override
             public void run() {
                 if (success==true) {
-                    Toast.makeText(getApplicationContext(), "This ID already exists. Try again.", Toast.LENGTH_LONG).show();
-                }else{
                     Toast.makeText(getApplicationContext(), "Available ID!", Toast.LENGTH_LONG).show();
+                }else{
+                    Toast.makeText(getApplicationContext(), "This ID already exists. Try again.", Toast.LENGTH_LONG).show();
                 }
             }
         }, 0);

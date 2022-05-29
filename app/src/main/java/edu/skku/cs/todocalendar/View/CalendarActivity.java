@@ -3,18 +3,16 @@ package edu.skku.cs.todocalendar.View;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.graphics.Canvas;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.CalendarView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import java.time.LocalDate;
@@ -25,7 +23,7 @@ import java.util.ArrayList;
 import edu.skku.cs.todocalendar.Classes.Plan;
 import edu.skku.cs.todocalendar.Presenter.CalendarContract;
 import edu.skku.cs.todocalendar.Presenter.CalendarPresenter;
-import edu.skku.cs.todocalendar.Presenter.MainPresenter;
+import edu.skku.cs.todocalendar.Presenter.ItemTouchHelperCallback;
 import edu.skku.cs.todocalendar.R;
 
 
@@ -36,8 +34,10 @@ public class CalendarActivity extends AppCompatActivity implements CalendarContr
     private LocalDate selectedDate;
 
     AppCompatButton addplan;
-    ListView listview;
+
+    RecyclerView listview;
     ListViewAdapter listViewAdapter;
+    ItemTouchHelper helper;
 
     ArrayList<Plan> plans;
     ArrayList<Plan> todayplans;
@@ -64,7 +64,20 @@ public class CalendarActivity extends AppCompatActivity implements CalendarContr
             }
         }.start();
 
+        // todolist recycler view
         listview = findViewById(R.id.todo_list);
+        LinearLayoutManager manager = new LinearLayoutManager(this);
+        manager.setOrientation(LinearLayoutManager.VERTICAL);
+        listview.setLayoutManager(manager);
+        //set adapter
+        listViewAdapter = new ListViewAdapter(this);
+        listview.setAdapter(listViewAdapter);
+        //helper
+        helper = new ItemTouchHelper(new ItemTouchHelperCallback((listViewAdapter)));
+        helper.attachToRecyclerView(listview);
+
+
+
         addplan = findViewById(R.id.b_add_todo);
 
         addplan.setOnClickListener(new View.OnClickListener() {
@@ -73,6 +86,15 @@ public class CalendarActivity extends AppCompatActivity implements CalendarContr
                 Intent intent = new Intent(getApplicationContext(), TodoActivity.class);
                 //intent.putExtra("*/-+")
                 startActivity(intent);
+            }
+        });
+    }
+
+    private void setUpRecyclerView(){
+        listview.addItemDecoration(new RecyclerView.ItemDecoration() {
+            @Override
+            public void onDraw(@NonNull Canvas c, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
+                helper.onDraw(c, parent, state);
             }
         });
     }
@@ -132,15 +154,18 @@ public class CalendarActivity extends AppCompatActivity implements CalendarContr
     @Override
     public void onItemClick(int position, String dayText) {
         if(!dayText.equals("")) {
-            presenter.onDateClick(selectedDate.getYear(), selectedDate.getMonthValue()+1, Integer.parseInt(dayText)); //month: 0~11
+            presenter.onDateClick(selectedDate.getYear(), selectedDate.getMonthValue(), Integer.parseInt(dayText)); //month: 0~11
         }
     }
 
 
     @Override
     public void showTodayTodoList(ArrayList<Plan> today_plans) {
-        listViewAdapter = new ListViewAdapter(getApplicationContext(), today_plans);
-        listview.setAdapter(listViewAdapter);
+        // listViewAdapter = new ListViewAdapter(getApplicationContext(), today_plans);
+        // listview.setAdapter(listViewAdapter);
+        Log.e("calendaractivity", String.valueOf(today_plans.size()));
+        Log.e("calendaractivity", "showtodaytodolist");
+        listViewAdapter.setItems(today_plans);
     }
 
     @Override
