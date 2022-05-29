@@ -17,7 +17,7 @@
             android:layout_weight="1"
             android:text="@string/left"
             android:textColor="@color/black"
-            android:background="#FF000000"
+            android:background="#00ff0000"
             android:textStyle="bold"
             android:onClick="previousMonthAction"
             android:textSize="20sp"/>
@@ -28,7 +28,7 @@
             android:layout_weight="2"
             android:layout_height="wrap_content"
             android:text="Feb 2022"
-            android:textSize="20sp"
+            android:textSize="25dp"
             android:textAlignment="center"
             android:textColor="@color/black"/>
 
@@ -38,7 +38,7 @@
             android:layout_weight="1"
             android:text="@string/right"
             android:textColor="@color/black"
-            android:background="#FF000000"
+            android:background="#00ff0000"
             android:textStyle="bold"
             android:onClick="nextMonthAction"
             android:textSize="20sp"/>
@@ -154,7 +154,7 @@
             android:background="@drawable/shape"
             />
     </androidx.constraintlayout.widget.ConstraintLayout>
-    <ListView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/todo_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>

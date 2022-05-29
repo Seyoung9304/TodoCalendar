@@ -43,7 +43,6 @@ public class CalendarActivity extends AppCompatActivity implements CalendarContr
     ArrayList<Plan> todayplans;
 
     private String uid;
-    // long selectedDate;
 
     CalendarContract.Presenter presenter;
 
@@ -65,7 +64,6 @@ public class CalendarActivity extends AppCompatActivity implements CalendarContr
             }
         }.start();
 
-        // calendarView = findViewById(R.id.calendarview);
         listview = findViewById(R.id.todo_list);
         addplan = findViewById(R.id.b_add_todo);
 
@@ -77,13 +75,6 @@ public class CalendarActivity extends AppCompatActivity implements CalendarContr
                 startActivity(intent);
             }
         });
-        /*
-        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
-            @Override
-            public void onSelectedDayChange(@NonNull CalendarView calendarView, int year, int month, int day) {
-
-            }
-        });*/
     }
 
     private void initWidgets()
@@ -142,8 +133,6 @@ public class CalendarActivity extends AppCompatActivity implements CalendarContr
     public void onItemClick(int position, String dayText) {
         if(!dayText.equals("")) {
             presenter.onDateClick(selectedDate.getYear(), selectedDate.getMonthValue()+1, Integer.parseInt(dayText)); //month: 0~11
-            // String message = "Selected Date " + dayText + " " + monthYearFromDate(selectedDate);
-            // Toast.makeText(this, message, Toast.LENGTH_LONG).show();
         }
     }
 
