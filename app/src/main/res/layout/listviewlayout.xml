@@ -6,14 +6,14 @@
     android:padding="10dp"
     >
 
-    <CheckBox
-        android:id="@+id/todo_object"
+    <TextView
+        android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:text="YOUR TODO"
+        android:textSize="20dp"
         android:gravity="center_vertical"
-        android:backgroundTint="@color/trans_purple"
         />
 
 </LinearLayout>
