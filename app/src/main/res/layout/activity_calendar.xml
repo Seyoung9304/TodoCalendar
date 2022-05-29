@@ -134,6 +134,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp"
+        android:background="@color/trans_purple"
         >
         <TextView
             android:id="@+id/textview_todo"
@@ -141,6 +142,7 @@
             android:layout_height="wrap_content"
             android:text="TODOs"
             android:textSize="30dp"
+            android:textColor="@color/black"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
