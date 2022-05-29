@@ -1,23 +1,19 @@
 package edu.skku.cs.todocalendar.View;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import edu.skku.cs.todocalendar.Presenter.TodoContract;
+import edu.skku.cs.todocalendar.Presenter.CalendarContract;
 import edu.skku.cs.todocalendar.Presenter.TodoPresenter;
 import edu.skku.cs.todocalendar.R;
 
-public class TodoActivity extends Activity implements TodoContract.View {
+public class TodoActivity extends Activity implements CalendarContract.TodoView {
 
     EditText e_title;
     EditText e_memo;
@@ -32,30 +28,41 @@ public class TodoActivity extends Activity implements TodoContract.View {
     int day;
     private String uid;
 
-    TodoContract.Presenter presenter;
+    int id;
+    String title;
+    String memo;
+
+    CalendarContract.TodoPresenter presenter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_todo);
-
-        intent = getIntent();
-        menu = intent.getStringExtra("menu");
-        uid = intent.getStringExtra("uid");
-        year = intent.getIntExtra("y", 0);
-        month = intent.getIntExtra("m", 0);
-        day = intent.getIntExtra("d", 0);
-
-        String today = Integer.toString(year) + ". " + Integer.toString(month) + ". " + Integer.toString(day);
-
-        presenter = new TodoPresenter(this);
-
         e_title = findViewById(R.id.e_title);
         e_memo = findViewById(R.id.e_memo);
         tv_date = findViewById(R.id.date);
         b_check = findViewById(R.id.b_check);
         b_cancel = findViewById(R.id.b_cancel);
 
+        presenter = new TodoPresenter(this);
+
+        intent = getIntent();
+        menu = intent.getStringExtra("menu");
+        year = intent.getIntExtra("y", 0);
+        month = intent.getIntExtra("m", 0);
+        day = intent.getIntExtra("d", 0);
+        if (menu.compareTo("add")==0){
+            uid = intent.getStringExtra("uid");
+        }
+        else{
+            id = intent.getIntExtra("id", -1);
+            title = intent.getStringExtra("title");
+            memo = intent.getStringExtra("memo");
+            e_title.setText(title);
+            e_memo.setText(memo);
+        }
+
+        String today = Integer.toString(year) + ". " + Integer.toString(month) + ". " + Integer.toString(day);
         tv_date.setText(today);
 
         //intent로 받을거: 선택된 날짜, 메뉴, update인 경우 기존데이터
@@ -73,7 +80,6 @@ public class TodoActivity extends Activity implements TodoContract.View {
                     }.start();
                 }else{
                     // Intent "menu" == update인 경우
-                    int id = intent.getIntExtra("id", -1);
                     String title = e_title.getText().toString();
                     String memo = e_memo.getText().toString();
                     new Thread(){

@@ -10,10 +10,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 
 import edu.skku.cs.todocalendar.Classes.Plan;
-import edu.skku.cs.todocalendar.Classes.User;
 import edu.skku.cs.todocalendar.Presenter.CalendarContract;
-import edu.skku.cs.todocalendar.Presenter.CalendarPresenter;
-import edu.skku.cs.todocalendar.Presenter.TodoContract;
 import okhttp3.HttpUrl;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -22,9 +19,8 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class TodoModel {
-    TodoContract.Presenter presenter;
-
-    public TodoModel(TodoContract.Presenter presenter){
+    CalendarContract.TodoPresenter presenter;
+    public TodoModel(CalendarContract.TodoPresenter presenter){
         this.presenter = presenter;
     }
     public Boolean addPlan(String uid, String title, String memo, int year, int month, int day){
@@ -62,6 +58,7 @@ public class TodoModel {
             Log.e("addPlanResponse", "HTTPErr");
         }
         if (success){
+
             return true;
         }else{
             return false;
@@ -106,5 +103,46 @@ public class TodoModel {
         }else{
             return false;
         }
+    }
+    public void deletePlan(int id){
+        Boolean success = false;
+        try {
+            OkHttpClient client = new OkHttpClient();
+            HttpUrl.Builder urlBuilder = HttpUrl.parse("https://ofihg9ck5b.execute-api.ap-northeast-2.amazonaws.com/dev/deleteplan").newBuilder();
+            urlBuilder.addQueryParameter("id", Integer.toString(id));
+            String url = urlBuilder.build().toString();
+            Request req = new Request.Builder().url(url).build();
+            Response response = client.newCall(req).execute();
+            final String Response = response.body().string();
+            JSONObject jsonObject = null;
+            jsonObject = new JSONObject(Response);
+            success = jsonObject.getBoolean("success");
+        } catch (JSONException | IOException e) {
+            e.printStackTrace();
+        }
+        Log.e("success?", success.toString());
+    }
+    public void updatePlanStatus(int id, Boolean done){
+        Boolean success = false;
+        String done_req = "false";
+        if (done==true){
+            done_req = "true";
+        }
+        try {
+            OkHttpClient client = new OkHttpClient();
+            HttpUrl.Builder urlBuilder = HttpUrl.parse("https://ofihg9ck5b.execute-api.ap-northeast-2.amazonaws.com/dev/updateplanstatus").newBuilder();
+            urlBuilder.addQueryParameter("id", Integer.toString(id));
+            urlBuilder.addQueryParameter("done", done_req);
+            String url = urlBuilder.build().toString();
+            Request req = new Request.Builder().url(url).build();
+            Response response = client.newCall(req).execute();
+            final String Response = response.body().string();
+            JSONObject jsonObject = null;
+            jsonObject = new JSONObject(Response);
+            success = jsonObject.getBoolean("success");
+        } catch (JSONException | IOException e) {
+            e.printStackTrace();
+        }
+        Log.e("success?", success.toString());
     }
 }

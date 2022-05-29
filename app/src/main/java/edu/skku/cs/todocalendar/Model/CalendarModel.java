@@ -25,8 +25,8 @@ import okhttp3.Response;
 public class CalendarModel {
     ArrayList<Plan> plans;
 
-    CalendarContract.Presenter presenter;
-    public CalendarModel(CalendarContract.Presenter presenter){
+    CalendarContract.CalendarPresenter presenter;
+    public CalendarModel(CalendarContract.CalendarPresenter presenter){
         this.presenter = presenter;
         plans = new ArrayList<Plan>();
     }
@@ -89,10 +89,5 @@ public class CalendarModel {
             }
         }
         return todayplan;
-    }
-
-    public void newPlanAdded(Plan plan){
-        plans.add(plan);
-
     }
 }

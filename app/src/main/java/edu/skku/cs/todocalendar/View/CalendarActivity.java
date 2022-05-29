@@ -28,7 +28,7 @@ import edu.skku.cs.todocalendar.Presenter.ItemTouchHelperCallback;
 import edu.skku.cs.todocalendar.R;
 
 
-public class CalendarActivity extends AppCompatActivity implements CalendarContract.View, CalendarAdapter.OnItemListener {
+public class CalendarActivity extends AppCompatActivity implements CalendarContract.CalendarView, CalendarAdapter.OnItemListener {
 
     private TextView monthYearText;
     private RecyclerView calendarRecyclerView;
@@ -36,6 +36,7 @@ public class CalendarActivity extends AppCompatActivity implements CalendarContr
     private int selectedDay = 0;
 
     AppCompatButton addplan;
+    TextView dateTodo;
 
     RecyclerView listview;
     ListViewAdapter listViewAdapter;
@@ -46,7 +47,7 @@ public class CalendarActivity extends AppCompatActivity implements CalendarContr
 
     private String uid;
 
-    CalendarContract.Presenter presenter;
+    CalendarContract.CalendarPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +60,8 @@ public class CalendarActivity extends AppCompatActivity implements CalendarContr
         setMonthView();
 
         uid = getIntent().getStringExtra("uid");
+
+        Log.e("calendaractivity", "oncreate");
 
         new Thread(){
             public void run(){
@@ -79,6 +82,7 @@ public class CalendarActivity extends AppCompatActivity implements CalendarContr
         helper.attachToRecyclerView(listview);
 
         addplan = findViewById(R.id.b_add_todo);
+        dateTodo = findViewById(R.id.selected_date);
 
         addplan.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -166,6 +170,8 @@ public class CalendarActivity extends AppCompatActivity implements CalendarContr
         if(!dayText.equals("")) {
             selectedDay = Integer.parseInt(dayText);
             presenter.onDateClick(selectedDate.getYear(), selectedDate.getMonthValue(), Integer.parseInt(dayText)); //month: 0~11
+            String showtext = selectedDate.getYear() + ". " + selectedDate.getMonthValue() + ". " + dayText;
+            dateTodo.setText(showtext);
         }
     }
 
@@ -182,7 +188,18 @@ public class CalendarActivity extends AppCompatActivity implements CalendarContr
 
     @Override
     public void showTotalTodoList(ArrayList<Plan> plans) {
-        // TODO
-        return;
+        ACTIVITY_plans = plans;
+    }
+
+    public void addTodo(Plan plan){
+        ACTIVITY_plans.add(plan);
+        ACTIVITY_todayplans.add(plan);
+        listViewAdapter.setItems(ACTIVITY_todayplans);
+    }
+
+    public void deleteTodo(Plan plan){
+        ACTIVITY_todayplans.remove(plan);
+        ACTIVITY_plans.remove(plan);
+        listViewAdapter.setItems(ACTIVITY_todayplans);
     }
 }

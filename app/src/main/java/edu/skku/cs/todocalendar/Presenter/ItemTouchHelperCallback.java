@@ -20,20 +20,25 @@ public class ItemTouchHelperCallback extends ItemTouchHelper.Callback {
         RIGHT_VISIBLE
     }
 
-    private final ItemTouchHelperListener listener;
+    private final CalendarContract.ItemTouchHelperListener listener;
     private boolean swipeBack = false;
     private ButtonsState buttonsShowedState = ButtonsState.GONE;
     private static final float buttonWidth = 115;
     private RectF buttonInstance = null;
     private RecyclerView.ViewHolder currenrtItemViewHolder = null;
 
-    public ItemTouchHelperCallback(ItemTouchHelperListener listener) {
+    public ItemTouchHelperCallback(CalendarContract.ItemTouchHelperListener listener) {
         this.listener = listener;
     }
 
     @Override
     public boolean isLongPressDragEnabled() {
         return true;
+    }
+
+    @Override
+    public boolean isItemViewSwipeEnabled() {
+        return super.isItemViewSwipeEnabled();
     }
 
     @Override
@@ -91,7 +96,6 @@ public class ItemTouchHelperCallback extends ItemTouchHelper.Callback {
         Paint p = new Paint();
 
         buttonInstance = null;
-
 
         //오른쪽으로 스와이프 했을때 (왼쪽에 버튼이 보여지게 될 경우)
         if(buttonsShowedState == ButtonsState.LEFT_VISIBLE){

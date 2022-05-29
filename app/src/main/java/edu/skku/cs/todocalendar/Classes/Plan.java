@@ -10,6 +10,10 @@ public class Plan {
     String memo;
     Boolean done;
 
+    public void changeStatus(){
+        done = !done;
+    }
+
     public String getUid() {
         return uid;
     }
