@@ -23,7 +23,7 @@ public class ItemTouchHelperCallback extends ItemTouchHelper.Callback {
     private final CalendarContract.ItemTouchHelperListener listener;
     private boolean swipeBack = false;
     private ButtonsState buttonsShowedState = ButtonsState.GONE;
-    private static final float buttonWidth = 115;
+    private static final float buttonWidth = 140;
     private RectF buttonInstance = null;
     private RecyclerView.ViewHolder currenrtItemViewHolder = null;
 
@@ -103,7 +103,7 @@ public class ItemTouchHelperCallback extends ItemTouchHelper.Callback {
                     itemView.getBottom() - 10);
             p.setColor(Color.BLUE);
             c.drawRoundRect(leftButton, corners, corners, p);
-            drawText("완료", c, leftButton, p);
+            drawText("Done", c, leftButton, p);
             buttonInstance = leftButton;
 
             //왼쪽으로 스와이프 했을때 (오른쪽에 버튼이 보여지게 될 경우)
@@ -112,7 +112,7 @@ public class ItemTouchHelperCallback extends ItemTouchHelper.Callback {
                     itemView.getBottom() - 10);
             p.setColor(Color.RED);
             c.drawRoundRect(rightButton, corners, corners, p);
-            drawText("삭제", c, rightButton, p);
+            drawText("Delete", c, rightButton, p);
 
             buttonInstance = rightButton;
         }

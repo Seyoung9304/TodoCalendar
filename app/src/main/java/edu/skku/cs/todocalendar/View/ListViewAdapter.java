@@ -113,7 +113,8 @@ public class ListViewAdapter extends RecyclerView.Adapter<ListViewAdapter.ItemVi
             }
         }.start();
         items.remove(position);
-        notifyItemRemoved(position);
+        //notifyItemRemoved(position);
+        notifyDataSetChanged();
         Toast.makeText(mContext, "Delete Success!", Toast.LENGTH_SHORT).show();
     }
 
