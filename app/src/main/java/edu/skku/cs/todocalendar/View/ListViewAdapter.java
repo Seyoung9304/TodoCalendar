@@ -140,7 +140,10 @@ public class ListViewAdapter extends RecyclerView.Adapter<ListViewAdapter.ItemVi
                     intent.putExtra("y", plan.getYear());
                     intent.putExtra("m", plan.getMonth());
                     intent.putExtra("d", plan.getDay());
-                    mContext.startActivity(intent);
+
+                    if (mContext instanceof CalendarActivity) {
+                        ((CalendarActivity)mContext).runTodoActivity(intent);
+                    }
                 }
             });
         }

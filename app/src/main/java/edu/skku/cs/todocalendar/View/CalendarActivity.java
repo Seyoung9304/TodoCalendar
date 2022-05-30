@@ -223,4 +223,8 @@ public class CalendarActivity extends AppCompatActivity implements CalendarContr
             Log.e("onactivityresult", "after");
         }
     }
+
+    public void runTodoActivity(Intent intent){
+        startActivityForResult(intent, SUCCESS_CODE);
+    }
 }
