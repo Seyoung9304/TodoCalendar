@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">TodoCalendar</string>
+    <string name="app_url">https://ofihg9ck5b.execute-api.ap-northeast-2.amazonaws.com/dev/</string>
+    <string name="left">◀</string>
+    <string name="right">▶</string>
+</resources>
