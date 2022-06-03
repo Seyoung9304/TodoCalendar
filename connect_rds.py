@@ -9,9 +9,9 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String, DateTime, Boolean
 
 USER = "postgres"
-PW = "rlatpdud1!"
-URL = "todo-calendar.cgtfmi84mzzc.ap-northeast-2.rds.amazonaws.com"
-PORT = "5432"
+PW = "YOUR_AWS_PW"
+URL = "YOUR_RDS_URL"
+PORT = "YOUR_RDS_PORT"
 DB = "postgres"
 
 engine = create_engine("postgresql://{}:{}@{}:{}/{}".format(USER, PW, URL,PORT, DB))
